@@ -1,0 +1,10 @@
+I did ungodly things to that forth/html/javascript that you don't want to see. I will spare you the pain.
+
+
+
+-> Removed the 1000 instruction limit that keeps re-starting the interpreter making things very slow
+-> For loop in terminal.js to call the right forth functions in succession
+-> Modified forth to add symbols that return the antena access code and the file name to the callback
+-> Took 1 hour to figure out why I was getting the same image over and over again after I had randomized the Date()
+-> curl to download + python to average the images
+-> random smartphone app to read the QR code (you guys love QR codes don't you?)

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!-- saved from url=(0034)http://54.83.207.93:8080/index.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Tuenti Contest</title>
+  <link rel="stylesheet" type="text/css" href="./54.83.207.93_files/styles.css">
+  <link href="./54.83.207.93_files/css" rel="stylesheet" type="text/css">
+  <script src="./54.83.207.93_files/bootstrap.js"></script>
+  <script src="./54.83.207.93_files/os.js"></script>
+  <script src="./54.83.207.93_files/forth.js"></script>
+  <script src="./54.83.207.93_files/terminal.js"></script>
+  <script src="./54.83.207.93_files/photoviewer.js"></script>
+  <script src="./54.83.207.93_files/draggable.js"></script>
+</head>
+
+<body class="">
+
+<div id="term" class="win" style="left: 100px; top: 100px;">
+  <div class="back"></div>
+  <div class="border">
+    <div class="title"><h1>Terminal</h1></div>
+    <div class="body"><pre>~ $ telnet rosetta.control.esa.int
+Trying 185.30.93.10...
+
+username: operator801
+password: ******
+
+Welcome!
+Fri May 01 2015 16:38:22 GMT-0700 (PDT)
+
+</pre>
+    <div class="bottom">
+      <div class="prompt"># </div><div class="input"><input type="text" value=""><div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<div id="photo" class="win hide">
+  <div class="back"></div>
+  <div class="border">
+    <div class="title"><span class="btn-close">x</span><h1>Photo viewer</h1></div>
+    <div class="body"><img src="./54.83.207.93_files/saved_resource"></div>
+  </div>
+</div>
+
+<script id="stdlib" type="application/forth">
+  VARIABLE $0
+  VARIABLE $1
+  VARIABLE $M1
+  VARIABLE $M2
+  : ? @ . ;
+  : % @ # ;
+  : DROP $0 ! ;
+  : DUP $0 ! $0 @ $0 @ ;
+  : SWAP $0 ! $1 ! $0 @ $1 @ ;
+  : SPACE 32 EMIT ;
+  : DASH 45 EMIT ;
+  : COLON 58 EMIT ;
+  : UNDER 95 EMIT# ;
+  : CR 10 EMIT ;
+  : NEGATE 0 SWAP S ;
+  : INVERT 0= IF -1 ELSE 0 THEN ;
+  : A + ;
+  : S - ;
+</script>
+
+<script id="status" type="application/forth">
+  ." Last update: 2015-02-21 " CR
+  ." Distance to Sun: 339 Million km " CR
+  ." Distance to Earth: 485 Million km " CR
+  ." Comet speed: 22.94 km/s " CR
+</script>
+
+<script id="request-antenna-access" type="application/forth">
+  : MSG_CONNECTING ." Waiting for antenna " CR ;
+  : MSG_ARGS_ERROR ." Arguments Error " ;
+  : MSG_READY ." Antenna ready! " CR ." Access code: " SPACE # CR ;
+  : MSG_ORIENTING CR ." Preparing " CR ;
+  : MSG_WAIT ." · " ;
+  : CHECKARGS $ARGC @ = ;
+  : MAGIC 574381 ;
+  : CONNECT 127 RNG 1500 0 DO LOOP 42 S 0= IF ELSE MSG_WAIT CONNECT THEN ;
+  : ORIENT $ARG1 @ 0 DO SWAP A MSG_WAIT LOOP MAGIC XOR CR MSG_READY ;
+  3 CHECKARGS IF MSG_CONNECTING CONNECT MSG_ORIENTING ORIENT ELSE MSG_ARGS_ERROR CR THEN
+</script>
+
+<script id="send-photo-command" type="application/forth">
+  : V VARIABLE ;
+  V ANT DUP ANT !
+  V YYYY V MM V DD V HH V NN V SS
+  : DISTANCE ." 27.95 " ;
+  : PROCESS $M1 ! $M2 ! $M1 @ 0= $M2 @ 0= A 0= INVERT
+    IF 0 ELSE $M2 @ ABS $M1 @ ABS 1- 0 DO $M2 @ ABS A LOOP THEN
+    $M1 @ 0< IF NEGATE THEN $M2 @ 0< IF NEGATE THEN ;
+  : ZPAD2 DUP 10 S 0< IF ." 0 " THEN . ;
+  : DATETIME! YYYY ! 1+ MM ! DD ! HH ! NN ! SS ! ;
+  : DATETIME@ SS @ NN @ HH @ DD @ MM @ YYYY @ ;
+  : DATETIME? YYYY ? DASH MM @ ZPAD2 DASH DD @ ZPAD2 SPACE HH @ ZPAD2 COLON NN @ ZPAD2 COLON SS @ ZPAD2 ;
+  : GET_FILENAME ANT % UNDER YYYY % UNDER MM % UNDER DD % UNDER HH % UNDER NN % UNDER SS % UNDER # ;
+  : MAKE_PHOTO_AND_WAIT_RESPONSE DATETIME@ 30000 $ARG1 @ 6 A 0 DO DUP 2 PROCESS A A LOOP ;
+  DATETIME DATETIME!
+  ." Command sent on: " SPACE DATETIME? CR
+  ." Waiting for response... " CR
+  MAKE_PHOTO_AND_WAIT_RESPONSE CR
+  ." Photo received! Filename: " SPACE GET_FILENAME CR
+</script>
+
+<script id="test" type="application/forth">
+  ." Forth VM self-check: "
+  SPACE 10 10 0 DO 1- DUP . 1001 1201 A DROP SPACE LOOP 0 =
+  IF ." OK! " ELSE ." ERROR! " THEN CR
+</script>
+
+
+
+</div></div></body><iframe class="vomnibarFrame vimiumUIComponentHidden" src="./54.83.207.93_files/vomnibar.html"></iframe></html>
