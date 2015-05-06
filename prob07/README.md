@@ -22,5 +22,11 @@ the id of that node), if she doesn’t have a friend who likes cats (-1), or if 
 who likes cats (-2). For each girl, this condition is satisfied iff V(G) >= 0 and (V(V(G)) == -1 or V(V(G)) == G). This
 is computed in O(1), again more efficient than just doing it naively.
 
+5 points for every girl H who likes to go shopping and has no possible connection with G through a chain of friends.
+This is another way of saying “total number of girls who like shopping and are in a different connected component of
+the graph”. In order to do this efficiently we compute the connected components of the graph by doing DFS and then
+count how many girls like shopping in each connected component O(N). The score for each girl is computed in O(1) as
+TOTAL_GIRLS_WHO_LIKE_SHOPPING - GIRLS_WHO_LIKE_SHOPPING_IN_HER_CONNECTED_COMPONENT
+
 An important point to ensure the correctness of the solution is that we never register a friendship more than once as the
 input will contain repeated friendships.
