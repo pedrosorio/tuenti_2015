@@ -4,22 +4,28 @@ The first natural step is to try to use the terminal to do stuff. The first comm
 reqant to request access to the antena. Using the developer tools in the browser we can find the OS.user and OS.password
 required to make the command work.
 
-Then we need to use the photocmd with code we received from the previous command. The problem is, this one never finishes :(
+Then we need to use the photocmd with the code we received from the previous command. The problem is, this one never finishes :(
 
-Inspecting the code for the forth interpreter, there is a limit of 1000 characters that can be processed before a new interval
-is set for the command to wait again. Even after removing this, it’s still too slow, so we go ahead and dive into the forth code.
+Inspecting the code for the forth interpreter, there is a limit of 1000 characters that can be processed before a 33ms interval
+is set for the parser to start again. Even after removing this, it’s still too slow, so we go ahead and dive into the forth code.
 
 After learning forth to understand what those functions are doing, it turns out there are some pretty inefficient
 things going on. The best examples are the A and S functions that just add and subtract but do so by executing a for
-loop (lol).
+loop.
 
 Fixing this allows the function to finish quickly and we can use the photoview function with the received filename.
-Sure enough, the image is impossible to understand, seems like a lot of random noise is present. Restarting the terminal
-we re-do the process and compare the images (see the 2 images in the images/ folder). They are visually similar but not
-identical. It looks like the “solar flare” is super-imposing some random noise on a “good” image. If you have ever done 
+
+![](https://github.com/pedrosorio/tuenti_2015/blob/master/prob12/images/operator279_466441_1040826_2015_5_1_23_59_27_68122290)
+
+Sure enough, the image looks like some space object, but with a lot of random noise present. Restarting the terminal
+we re-do the process and compare the images:
+
+![](https://github.com/pedrosorio/tuenti_2015/blob/master/prob12/images/operator577_127770_603268_2015_5_1_4_23_49_67683961)
+
+They are visually similar but not identical. It looks like the “solar flare” is super-imposing some random noise on a “good” image. If you have ever done
 any kind of signal processing, what you have to do next is obvious - get a bunch of images and average the noise out.
 
-Now, at this point the smart thing to do would have been to  automate the process in javascript in a simple way (create a separate
+Now, at this point the smart thing to do would have been to automate the process in javascript in a simple way (create a separate
 file, call the functions repeatedly getting the results from the DOM, average the resulting images).
 
 Instead, I decided to define more primitives in the forth interpreter that append the value in the forth stack to a javascript

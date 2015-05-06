@@ -7,6 +7,6 @@ airscrew, and compute the sum of values under the two squares to find the best p
 The only challenge here is how to compute the sum of values in the squares efficiently and the problem
 is just begging for us to use the concept of [integral image](http://en.wikipedia.org/wiki/Summed_area_table).
 
-This means (yeah, you’ve got it) precomputation for the whole sheet in O(N*M), which will allow us to compute
+This means (yep, again) precomputation for the whole sheet in O(N*M), which will allow us to compute
 the score of any square (or rectangle for that matter) in O(1).
 

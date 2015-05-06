@@ -1,8 +1,8 @@
 Since we are using CFB mode and the key and iv are re-used every time, a plaintext with the same first x bytes as the
 correct text should create a cipher with the same first x bytes as the cipher given as input in this problem.
 
-Knowing this, we just need to generate a string that starts with 16 bytes defined by the server and whose sha1 last byte
-is \xFF. Iterating over all 24 byte sequences that start with the correct prefix should take ~128 tries on average, so
+To ask the server for a cipher, we need to generate a string that starts with 16 bytes defined by the server and whose sha1’s
+last byte is \xFF. Iterating over all 24 byte sequences that start with the correct prefix should take ~128 tries on average, so
 testing new sequences is relatively fast.
 
 There were two approaches to the brute force:

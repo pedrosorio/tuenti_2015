@@ -12,8 +12,8 @@ have cycles. For example, ships 1,2,3 are in a cycle where 1->2->3->1 and they a
 of any other ship therefore we must pick at least one of them or they won’t explode; however, since they all
 have incoming edges, they are not sources in the graph.
 
-An easy and efficient way to solve this problem is to compute the condensed graph. This a DAG where each
-node replaces a (strongly connected component)[http://en.wikipedia.org/wiki/Strongly_connected_component]
+A good way to solve this problem is to compute the condensed graph. This a DAG where each
+node replaces a [strongly connected component](http://en.wikipedia.org/wiki/Strongly_connected_component)
 in the original graph, and the edges between the nodes are the ones that exist between different SCC in the
 original graph (where repeating edges can be ignored).
 
